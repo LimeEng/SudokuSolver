@@ -36,36 +36,35 @@ public class Main {
 					String[] parts = lines.get(i).split(" -> ");
 
 					System.out.println("Input #" + (i + 1) + ": ");
-					System.out.println(SudokuPrinter.sudokuToPrettyString(SudokuSerializer.deserialize(parts[0])));
 
 					int[][] problem = SudokuSerializer.deserialize(parts[0]);
-					int[][] problemCopy = copy(problem);
+
+					boolean validProblem = SudokuUtils.isValid(problem, 3, 3);
+					boolean solvedProblem = SudokuUtils.isSolved(problem, 3, 3);
+
+					System.out.println("The problem is" + (validProblem ? " " : " not ") + "valid and"
+							+ (solvedProblem ? " " : " not ") + "solved");
+
+					System.out.println(SudokuPrinter.sudokuToPrettyString(problem));
+
 					long start = System.nanoTime();
 					int[][] solution = solver.solve(problem);
 					long result = System.nanoTime() - start;
 
 					System.out.println(SudokuPrinter.sudokuToPrettyString(solution));
 					System.out.println("Solved #" + (i + 1) + " after " + (result / 1000000) + " ms");
-					boolean valid = SudokuUtils.isValid(problemCopy, 3, 3);
-					boolean solved = SudokuUtils.isSolved(problemCopy, 3, 3);
-					System.out.println("Valid? " + valid);
-					System.out.println("Solved? " + solved);
+					boolean valid = SudokuUtils.isValid(solution, 3, 3);
+					boolean solved = SudokuUtils.isSolved(solution, 3, 3);
+
+					System.out.println("The solution is" + (valid ? " " : " not ") + "valid and"
+							+ (solved ? " " : " not ") + "solved");
+					System.out.println("=====================================");
 				}
 				long totalTime = System.nanoTime() - totalStart;
 				System.out.println("All puzzles solved in " + (totalTime / 1000000000) + " secs");
 			}
 		}
 
-	}
-
-	private static int[][] copy(int[][] array) {
-		int[][] copy = new int[array.length][array[0].length];
-		for (int i = 0; i < array.length; i++) {
-			for (int k = 0; k < array[i].length; k++) {
-				copy[i][k] = array[i][k];
-			}
-		}
-		return copy;
 	}
 
 	private static List<String> read(Path path) throws IOException {
