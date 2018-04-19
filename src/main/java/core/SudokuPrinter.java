@@ -28,17 +28,22 @@ public class SudokuPrinter {
 		return sb.toString();
 	}
 
-	private static void topBorder(StringBuilder sb, int width, int boxWidth) {
-		sb.append("╔");
+	private static void horizontalLine(StringBuilder sb, int width, int boxWidth, String leftMost, String normal,
+			String boxDelimiter, String rightMost) {
+		sb.append(leftMost);
 		for (int i = 0; i < width; i++) {
 			if (i % boxWidth == 0 && i != 0) {
 				sb.setLength(sb.length() - 1);
-				sb.append("╦");
+				sb.append(boxDelimiter);
 			}
-			sb.append("═══╤");
+			sb.append(normal);
 		}
 		sb.setLength(sb.length() - 1);
-		sb.append("╗\n");
+		sb.append(rightMost);
+	}
+
+	private static void topBorder(StringBuilder sb, int width, int boxWidth) {
+		horizontalLine(sb, width, boxWidth, "╔", "═══╤", "╦", "╗\n");
 	}
 
 	private static void rowBorder(StringBuilder sb) {
@@ -77,40 +82,13 @@ public class SudokuPrinter {
 			return;
 		}
 		if (row % boxHeight == 0) {
-			sb.append("╠");
-			for (int i = 0; i < width; i++) {
-				if (i % boxWidth == 0 && i != 0) {
-					sb.setLength(sb.length() - 1);
-					sb.append("╬");
-				}
-				sb.append("═══╪");
-			}
-			sb.setLength(sb.length() - 1);
-			sb.append("╣\n");
+			horizontalLine(sb, width, boxWidth, "╠", "═══╪", "╬", "╣\n");
 		} else {
-			sb.append("╟");
-			for (int i = 0; i < width; i++) {
-				if (i % boxWidth == 0 && i != 0) {
-					sb.setLength(sb.length() - 1);
-					sb.append("╫");
-				}
-				sb.append("───┼");
-			}
-			sb.setLength(sb.length() - 1);
-			sb.append("╢\n");
+			horizontalLine(sb, width, boxWidth, "╟", "───┼", "╫", "╢\n");
 		}
 	}
 
 	private static void bottomBorder(StringBuilder sb, int width, int boxWidth) {
-		sb.append("╚");
-		for (int i = 0; i < width; i++) {
-			if (i % boxWidth == 0 && i != 0) {
-				sb.setLength(sb.length() - 1);
-				sb.append("╩");
-			}
-			sb.append("═══╧");
-		}
-		sb.setLength(sb.length() - 1);
-		sb.append("╝\n");
+		horizontalLine(sb, width, boxWidth, "╚", "═══╧", "╩", "╝\n");
 	}
 }
