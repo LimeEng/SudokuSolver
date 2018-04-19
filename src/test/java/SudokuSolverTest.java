@@ -41,7 +41,7 @@ public abstract class SudokuSolverTest {
 		List<String> lines = read("src/test/resources/sudokus_and_solutions.txt").filter(e -> !e.isEmpty())
 				.collect(Collectors.toList());
 
-		while (lines.size() > 10) {
+		while (lines.size() > 2) {
 			lines.remove(lines.size() - 1);
 		}
 
