@@ -127,16 +127,6 @@ public class SudokuBoard extends GridPane {
 
 		} else {
 			sudoku[row][col] = 0;
-			// if (SudokuUtils.uniqueRow(sudoku, row)) {
-			// colorRow(COLOR_DEFAULT, row);
-			// }
-			// if (SudokuUtils.uniqueCol(sudoku, col)) {
-			// colorCol(COLOR_DEFAULT, col);
-			// }
-			// if (SudokuUtils.uniqueSubBoxAt(sudoku, row, col, boxWidth,
-			// boxHeight)) {
-			// colorSubBox(COLOR_DEFAULT, row, col);
-			// }
 			area.setStyle("text-area-background: #ffffff;");
 		}
 	}
