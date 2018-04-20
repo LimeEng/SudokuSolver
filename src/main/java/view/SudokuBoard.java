@@ -2,6 +2,7 @@ package view;
 
 import java.util.Arrays;
 
+import core.SudokuUtils;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectExpression;
@@ -96,14 +97,52 @@ public class SudokuBoard extends GridPane {
 
 		area.textProperty()
 				.addListener((obs, oldText, newText) -> {
-					if (!newText.isEmpty()) {
-						sudoku[row][col] = Integer.parseInt(area.getText());
-					}
-					print(sudoku);
-					System.out.println();
+					handleInput(newText, area, row, col);
 				});
 
 		return area;
+	}
+
+	private void handleInput(String input, TextArea area, int row, int col) {
+		if (!input.isEmpty()) {
+			int value = Integer.parseInt(area.getText());
+			if (!SudokuUtils.validForRow(sudoku, row, value)) {
+				colorRow("#ffaaaa", row);
+				area.setStyle("text-area-background: #ff4242;");
+			}
+			if (!SudokuUtils.validForCol(sudoku, col, value)) {
+				colorCol("#ffaaaa", col);
+				area.setStyle("text-area-background: #ff4242;");
+			}
+			if (!SudokuUtils.validForSubBox(sudoku, row, col, value, boxWidth, boxHeight)) {
+
+			}
+			sudoku[row][col] = value;
+		} else {
+			area.setStyle("text-area-background: #ffffff;");
+		}
+	}
+
+	private void colorRow(String color, int row) {
+		for (int col = 0; col < sudoku[row].length; col++) {
+			StackPane pane = (StackPane) getNode(row, col);
+			for (Node node : pane.getChildren()) {
+				node.setStyle("text-area-background: " + color + ";");
+			}
+		}
+	}
+
+	private void colorCol(String color, int col) {
+		for (int row = 0; row < sudoku.length; row++) {
+			StackPane pane = (StackPane) getNode(row, col);
+			for (Node node : pane.getChildren()) {
+				node.setStyle("text-area-background: " + color + ";");
+			}
+		}
+	}
+
+	private void colorSubBox(String color) {
+
 	}
 
 	// https://stackoverflow.com/questions/20655024/javafx-gridpane-retrive-specific-cell-content

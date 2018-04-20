@@ -28,3 +28,11 @@
 .text-area:centeredText .text {
     -fx-text-alignment: center ;
 }
+
+.text-area {
+    text-area-background: white ;
+}
+
+.text-area .content {
+    -fx-background-color: text-area-background ;
+}

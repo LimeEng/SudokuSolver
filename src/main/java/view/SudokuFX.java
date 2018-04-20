@@ -12,6 +12,7 @@ public class SudokuFX extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 
+		// SudokuPlay main = new SudokuPlay();
 		SudokuBoard board = new SudokuBoard();
 
 		Scene scene = new Scene(board, 1200, 900);
