@@ -1,7 +1,6 @@
 package view;
 
 import java.util.Arrays;
-
 import core.SudokuUtils;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -25,6 +24,11 @@ public class SudokuBoard extends GridPane {
 
 	private final ObjectExpression<Font> fontTracking = Bindings.createObjectBinding(() -> Font.font(getWidth() / 40),
 			widthProperty());
+
+	private static final String COLOR_DEFAULT = "#ffffff";
+	private static final String COLOR_WRONG = "#ffaaaa";
+	private static final String COLOR_WRONG_HIGHLIGHT = "#ff4242";
+	private static final String COLOR_SOLVED = "aaffaa";
 
 	private final int[][] sudoku;
 
@@ -107,19 +111,71 @@ public class SudokuBoard extends GridPane {
 		if (!input.isEmpty()) {
 			int value = Integer.parseInt(area.getText());
 			if (!SudokuUtils.validForRow(sudoku, row, value)) {
-				colorRow("#ffaaaa", row);
-				area.setStyle("text-area-background: #ff4242;");
+				area.setStyle("text-area-background: " + COLOR_WRONG_HIGHLIGHT + ";");
 			}
 			if (!SudokuUtils.validForCol(sudoku, col, value)) {
-				colorCol("#ffaaaa", col);
-				area.setStyle("text-area-background: #ff4242;");
+				area.setStyle("text-area-background: " + COLOR_WRONG_HIGHLIGHT + ";");
 			}
 			if (!SudokuUtils.validForSubBox(sudoku, row, col, value, boxWidth, boxHeight)) {
-
+				area.setStyle("text-area-background: " + COLOR_WRONG_HIGHLIGHT + ";");
 			}
 			sudoku[row][col] = value;
+
+			if (SudokuUtils.isSolved(sudoku, boxWidth, boxHeight)) {
+				colorEverything(COLOR_SOLVED);
+			}
+
 		} else {
+			sudoku[row][col] = 0;
+			// if (SudokuUtils.uniqueRow(sudoku, row)) {
+			// colorRow(COLOR_DEFAULT, row);
+			// }
+			// if (SudokuUtils.uniqueCol(sudoku, col)) {
+			// colorCol(COLOR_DEFAULT, col);
+			// }
+			// if (SudokuUtils.uniqueSubBoxAt(sudoku, row, col, boxWidth,
+			// boxHeight)) {
+			// colorSubBox(COLOR_DEFAULT, row, col);
+			// }
 			area.setStyle("text-area-background: #ffffff;");
+		}
+	}
+
+	// private void handleInput(String input, TextArea area, int row, int col) {
+	// if (!input.isEmpty()) {
+	// int value = Integer.parseInt(area.getText());
+	// if (!SudokuUtils.validForRow(sudoku, row, value)) {
+	// colorRow(COLOR_WRONG, row);
+	// area.setStyle("text-area-background: " + COLOR_WRONG_HIGHLIGHT + ";");
+	// }
+	// if (!SudokuUtils.validForCol(sudoku, col, value)) {
+	// colorCol(COLOR_WRONG, col);
+	// area.setStyle("text-area-background: " + COLOR_WRONG_HIGHLIGHT + ";");
+	// }
+	// if (!SudokuUtils.validForSubBox(sudoku, row, col, value, boxWidth,
+	// boxHeight)) {
+	// colorSubBox(COLOR_WRONG, row, col);
+	// area.setStyle("text-area-background: " + COLOR_WRONG_HIGHLIGHT + ";");
+	// }
+	// sudoku[row][col] = value;
+	// } else {
+	// sudoku[row][col] = 0;
+	// if (SudokuUtils.uniqueRow(sudoku, row)) {
+	// colorRow(COLOR_DEFAULT, row);
+	// }
+	// if (SudokuUtils.uniqueCol(sudoku, col)) {
+	// colorCol(COLOR_DEFAULT, col);
+	// }
+	// if (SudokuUtils.uniqueSubBoxAt(sudoku, row, col, boxWidth, boxHeight)) {
+	// colorSubBox(COLOR_DEFAULT, row, col);
+	// }
+	// // area.setStyle("text-area-background: #ffffff;");
+	// }
+	// }
+
+	private void colorEverything(String color) {
+		for (int row = 0; row < sudoku.length; row++) {
+			colorRow(color, row);
 		}
 	}
 
@@ -141,8 +197,18 @@ public class SudokuBoard extends GridPane {
 		}
 	}
 
-	private void colorSubBox(String color) {
+	private void colorSubBox(String color, int row, int col) {
+		int boxRow = row / boxWidth;
+		int boxCol = col / boxHeight;
 
+		for (int r = 0; r < boxHeight; r++) {
+			for (int c = 0; c < boxWidth; c++) {
+				StackPane pane = (StackPane) getNode(boxHeight * boxRow + r, boxWidth * boxCol + c);
+				for (Node node : pane.getChildren()) {
+					node.setStyle("text-area-background: " + color + ";");
+				}
+			}
+		}
 	}
 
 	// https://stackoverflow.com/questions/20655024/javafx-gridpane-retrive-specific-cell-content

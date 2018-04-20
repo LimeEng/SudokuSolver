@@ -63,6 +63,36 @@ public final class SudokuUtils {
 		return true;
 	}
 
+	public static boolean uniqueCol(int[][] sudoku, int col) {
+		Set<Integer> numbers = new HashSet<>();
+		for (int row = 0; row < sudoku[col].length; row++) {
+			int value = sudoku[row][col];
+			if (value == 0) {
+				continue;
+			}
+			boolean unique = numbers.add(value);
+			if (!unique) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static boolean uniqueRow(int[][] sudoku, int row) {
+		Set<Integer> numbers = new HashSet<>();
+		for (int col = 0; col < sudoku.length; col++) {
+			int value = sudoku[row][col];
+			if (value == 0) {
+				continue;
+			}
+			boolean unique = numbers.add(value);
+			if (!unique) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	private static boolean uniqueSubBoxes(int[][] sudoku, int boxWidth, int boxHeight) {
 		int nbrOfBoxesX = sudoku.length / boxWidth;
 		int nbrOfBoxesY = sudoku[0].length / boxHeight;
@@ -75,7 +105,7 @@ public final class SudokuUtils {
 		return true;
 	}
 
-	private static boolean uniqueSubBoxAt(int[][] sudoku, int row, int col, int boxWidth, int boxHeight) {
+	public static boolean uniqueSubBoxAt(int[][] sudoku, int row, int col, int boxWidth, int boxHeight) {
 		int boxRow = row / boxWidth;
 		int boxCol = col / boxHeight;
 
