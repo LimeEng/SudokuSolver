@@ -28,7 +28,3 @@
 .text-area:centeredText .text {
     -fx-text-alignment: center ;
 }
-
-.text-area .scroll-bar:vertical:disabled {
-    -fx-opacity: 0;
-}

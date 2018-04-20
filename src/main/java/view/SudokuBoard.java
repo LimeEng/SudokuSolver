@@ -2,10 +2,13 @@ package view;
 
 import java.util.Arrays;
 
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectExpression;
 import javafx.css.PseudoClass;
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.GridPane;
@@ -18,8 +21,6 @@ public class SudokuBoard extends GridPane {
 	private final int height;
 	private final int boxWidth;
 	private final int boxHeight;
-
-	// private final DoubleProperty fontSize = new SimpleDoubleProperty(10);
 
 	private final ObjectExpression<Font> fontTracking = Bindings.createObjectBinding(() -> Font.font(getWidth() / 40),
 			widthProperty());
@@ -45,10 +46,6 @@ public class SudokuBoard extends GridPane {
 	}
 
 	private void setup() {
-
-		// fontSize.bind(this.widthProperty()
-		// .add(this.heightProperty())
-		// .divide(50));
 
 		PseudoClass right = PseudoClass.getPseudoClass("right");
 		PseudoClass bottom = PseudoClass.getPseudoClass("bottom");
@@ -88,12 +85,13 @@ public class SudokuBoard extends GridPane {
 
 		PseudoClass centered = PseudoClass.getPseudoClass("centeredText");
 		area.pseudoClassStateChanged(centered, true);
-		
-//		area.prefHeightProperty().bind(this.heightProperty());
-//		area.prefWidthProperty().bind(this.widthProperty());
-		
-		area.setWrapText(true);
-		
+
+		Platform.runLater(() -> {
+			ScrollPane pane = (ScrollPane) area.lookup(".scroll-pane");
+			pane.setVbarPolicy(ScrollBarPolicy.NEVER);
+			pane.setHbarPolicy(ScrollBarPolicy.NEVER);
+		});
+
 		area.setMinSize(0, 0);
 
 		area.textProperty()
