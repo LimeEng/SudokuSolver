@@ -19,7 +19,6 @@ public class SudokuFX extends Application {
 		// SudokuPlay main = new SudokuPlay();
 		// SudokuBoard board = new SudokuBoard();
 		SudokuCanvas canvas = new SudokuCanvas(new Insets(40), 9, 9, 3, 3);
-
 		HBox box = createHBox(canvas);
 
 		canvas.widthProperty()
@@ -32,6 +31,7 @@ public class SudokuFX extends Application {
 				.add(toStylesheetString("src/resources/sudoku.css"));
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		canvas.requestFocus();
 	}
 
 	private HBox createHBox(Node... children) {

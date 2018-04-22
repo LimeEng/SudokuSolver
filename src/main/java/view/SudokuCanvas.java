@@ -3,6 +3,7 @@ package view;
 import javafx.geometry.Insets;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
 public class SudokuCanvas extends Canvas {
@@ -33,6 +34,7 @@ public class SudokuCanvas extends Canvas {
 		this.insets = insets;
 
 		createMouseListener();
+		createKeyListener();
 
 		widthProperty().addListener(evt -> draw());
 		heightProperty().addListener(evt -> draw());
@@ -40,12 +42,60 @@ public class SudokuCanvas extends Canvas {
 
 	private void createMouseListener() {
 		this.setOnMouseClicked(e -> {
+			// TODO: Implement proper detection
 			int mouseX = (int) e.getX();
 			int mouseY = (int) e.getY();
-			selectedRow = (int) (mouseY / getCellHeight());
-			selectedCol = (int) (mouseX / getCellWidth());
+			int row = (int) (mouseY / getCellHeight());
+			int col = (int) (mouseX / getCellWidth());
+			if (row == selectedRow && col == selectedCol) {
+				selectedRow = -1;
+				selectedCol = -1;
+			} else {
+				selectedRow = row;
+				selectedCol = col;
+			}
 			draw();
 		});
+	}
+
+	private void createKeyListener() {
+		this.setOnKeyPressed(e -> {
+			if (e.getCode() == KeyCode.W) {
+				if (shouldMoveSelected()) {
+					if (selectedRow == 0) {
+						selectedRow = height - 1;
+					} else {
+						selectedRow -= 1;
+					}
+				}
+			} else if (e.getCode() == KeyCode.S) {
+				if (shouldMoveSelected()) {
+					selectedRow = Math.abs((selectedRow + 1) % height);
+				}
+			} else if (e.getCode() == KeyCode.A) {
+				if (shouldMoveSelected()) {
+					if (selectedCol == 0) {
+						selectedCol = width - 1;
+					} else {
+						selectedCol -= 1;
+					}
+				}
+			} else if (e.getCode() == KeyCode.D) {
+				if (shouldMoveSelected()) {
+					selectedCol = Math.abs((selectedCol + 1) % width);
+				}
+			}
+			draw();
+		});
+	}
+
+	private boolean shouldMoveSelected() {
+		if (selectedRow == -1 || selectedCol == -1) {
+			selectedRow = 0;
+			selectedCol = 0;
+			return false;
+		}
+		return true;
 	}
 
 	public void draw() {
