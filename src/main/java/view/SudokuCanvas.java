@@ -3,7 +3,6 @@ package view;
 import javafx.geometry.Insets;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
 public class SudokuCanvas extends Canvas {
@@ -42,9 +41,8 @@ public class SudokuCanvas extends Canvas {
 
 	private void createMouseListener() {
 		this.setOnMouseClicked(e -> {
-			// TODO: Implement proper detection
-			int mouseX = (int) e.getX();
-			int mouseY = (int) e.getY();
+			int mouseX = (int) (e.getX() - insets.getLeft());
+			int mouseY = (int) (e.getY() - insets.getTop());
 			int row = (int) (mouseY / getCellHeight());
 			int col = (int) (mouseX / getCellWidth());
 			if (row == selectedRow && col == selectedCol) {
@@ -60,7 +58,9 @@ public class SudokuCanvas extends Canvas {
 
 	private void createKeyListener() {
 		this.setOnKeyPressed(e -> {
-			if (e.getCode() == KeyCode.W) {
+			switch (e.getCode()) {
+			case W:
+			case UP:
 				if (shouldMoveSelected()) {
 					if (selectedRow == 0) {
 						selectedRow = height - 1;
@@ -68,11 +68,15 @@ public class SudokuCanvas extends Canvas {
 						selectedRow -= 1;
 					}
 				}
-			} else if (e.getCode() == KeyCode.S) {
+				break;
+			case S:
+			case DOWN:
 				if (shouldMoveSelected()) {
 					selectedRow = Math.abs((selectedRow + 1) % height);
 				}
-			} else if (e.getCode() == KeyCode.A) {
+				break;
+			case A:
+			case LEFT:
 				if (shouldMoveSelected()) {
 					if (selectedCol == 0) {
 						selectedCol = width - 1;
@@ -80,10 +84,15 @@ public class SudokuCanvas extends Canvas {
 						selectedCol -= 1;
 					}
 				}
-			} else if (e.getCode() == KeyCode.D) {
+				break;
+			case D:
+			case RIGHT:
 				if (shouldMoveSelected()) {
 					selectedCol = Math.abs((selectedCol + 1) % width);
 				}
+				break;
+			default:
+				break;
 			}
 			draw();
 		});
@@ -129,7 +138,7 @@ public class SudokuCanvas extends Canvas {
 		for (int row = 0; row < width; row++) {
 			for (int col = 0; col < height; col++) {
 				if ((col + 1) % boxWidth == 0 && col != 0 && col != width - 1) {
-					g.setLineWidth(0.2 * cellWidth);
+					g.setLineWidth(0.1 * cellWidth);
 					double x1 = ((col * cellWidth) + xModifier) + 0.9 * cellWidth + (0.1 * cellWidth);
 					double y1 = ((row * cellHeight) + yModifier) + 0.9 * cellHeight;
 					double x2 = x1;
@@ -137,7 +146,7 @@ public class SudokuCanvas extends Canvas {
 					g.strokeLine(x1, y1, x2, y2);
 				}
 				if ((row + 1) % boxHeight == 0 && row != 0 && row != height - 1) {
-					g.setLineWidth(0.2 * cellHeight);
+					g.setLineWidth(0.1 * cellHeight);
 					double x1 = ((col * cellWidth) + xModifier) + 0.9 * cellWidth + (0.1 * cellWidth);
 					double y1 = ((row * cellHeight) + yModifier) + 0.9 * cellHeight;
 					double x2 = x1 - 0.9 * cellWidth;
@@ -157,11 +166,13 @@ public class SudokuCanvas extends Canvas {
 		double y2 = (y * cellHeight) + yModifier;
 		double w = 0.9 * cellWidth;
 		double h = 0.9 * cellHeight;
-		g.fillRoundRect(x2, y2, w, h, 20, 20);
+		double arcWidth = 20;
+		double arcHeight = arcWidth;
+		g.fillRect(x2, y2, w, h);
 		if (highlight) {
 			g.setLineWidth(0.1 * cellWidth);
 			g.setStroke(Color.RED);
-			g.strokeRoundRect(x2, y2, w, h, 20, 20);
+			g.strokeRoundRect(x2, y2, w, h, arcWidth, arcHeight);
 		}
 	}
 
