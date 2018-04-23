@@ -132,34 +132,33 @@ public class SudokuCanvas extends Canvas {
 	private void drawSubBoxes(GraphicsContext g) {
 		double cellWidth = getCellWidth();
 		double cellHeight = getCellHeight();
-		double xModifier = insets.getLeft();
-		double yModifier = insets.getTop();
 		g.setStroke(Color.BLACK);
+
 		for (int row = 0; row < width; row++) {
-			for (int col = 0; col < height; col++) {
-				if ((col + 1) % boxWidth == 0 && col != 0 && col != width - 1) {
-					g.setLineWidth(0.1 * cellWidth);
-					double x1 = ((col * cellWidth) + xModifier) + 0.9 * cellWidth + (0.1 * cellWidth);
-					double y1 = ((row * cellHeight) + yModifier) + 0.9 * cellHeight;
-					double x2 = x1;
-					double y2 = y1 - 0.9 * cellHeight;
-					g.strokeLine(x1, y1, x2, y2);
-				}
-				if ((row + 1) % boxHeight == 0 && row != 0 && row != height - 1) {
-					g.setLineWidth(0.1 * cellHeight);
-					double x1 = ((col * cellWidth) + xModifier) + 0.9 * cellWidth + (0.1 * cellWidth);
-					double y1 = ((row * cellHeight) + yModifier) + 0.9 * cellHeight;
-					double x2 = x1 - 0.9 * cellWidth;
-					double y2 = y1;
-					g.strokeLine(x1, y1, x2, y2);
-				}
+			if ((row + 1) % boxHeight == 0 && row != 0 && row != height - 1) {
+				g.setLineWidth(0.1 * cellHeight);
+				double x1 = insets.getLeft() + 0.05 * cellWidth;
+				double y1 = insets.getTop() + cellHeight * (row + 1) - 0.05 * cellHeight;
+				double x2 = getWidth() - insets.getRight() - 0.05 * cellWidth;
+				double y2 = y1;
+				g.strokeLine(x1, y1, x2, y2);
+			}
+		}
+
+		for (int col = 0; col < height; col++) {
+			if ((col + 1) % boxWidth == 0 && col != 0 && col != width - 1) {
+				g.setLineWidth(0.1 * cellWidth);
+				double x1 = insets.getLeft() + cellWidth * (col + 1) - 0.05 * cellHeight;
+				double y1 = insets.getTop() + 0.05 * cellHeight;
+				double x2 = x1;
+				double y2 = getHeight() - insets.getBottom() - 0.05 * cellHeight;
+				g.strokeLine(x1, y1, x2, y2);
 			}
 		}
 	}
 
 	private void drawCell(GraphicsContext g, double x, double y, double cellWidth, double cellHeight,
 			boolean highlight) {
-		g.setFill(Color.ANTIQUEWHITE);
 		double xModifier = insets.getLeft();
 		double yModifier = insets.getTop();
 		double x2 = (x * cellWidth) + xModifier;
@@ -168,6 +167,7 @@ public class SudokuCanvas extends Canvas {
 		double h = 0.9 * cellHeight;
 		double arcWidth = 20;
 		double arcHeight = arcWidth;
+		g.setFill(Color.ANTIQUEWHITE);
 		g.fillRect(x2, y2, w, h);
 		if (highlight) {
 			g.setLineWidth(0.1 * cellWidth);
@@ -200,5 +200,4 @@ public class SudokuCanvas extends Canvas {
 		}
 		return copy;
 	}
-
 }
