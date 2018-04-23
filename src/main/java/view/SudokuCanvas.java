@@ -41,6 +41,7 @@ public class SudokuCanvas extends Canvas {
 
 	private void createMouseListener() {
 		this.setOnMouseClicked(e -> {
+			this.requestFocus();
 			int mouseX = (int) (e.getX() - insets.getLeft());
 			int mouseY = (int) (e.getY() - insets.getTop());
 			int row = (int) (mouseY / getCellHeight());
