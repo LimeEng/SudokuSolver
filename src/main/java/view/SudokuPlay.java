@@ -2,6 +2,7 @@ package view;
 
 import core.BacktrackingDfsSolver;
 import core.SudokuSolver;
+import core.SudokuUtils;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -21,7 +22,10 @@ public class SudokuPlay extends HBox {
 		Button solveButton = new Button("Solve");
 
 		solveButton.setOnAction(e -> {
-			solution.setGrid(solver.solve(problem.toGrid()));
+			int[][] sudoku = problem.toGrid();
+			if (SudokuUtils.isValid(sudoku, 9, 9)) {
+				solution.setGrid(solver.solve(sudoku));
+			}
 		});
 
 		problem.widthProperty()
