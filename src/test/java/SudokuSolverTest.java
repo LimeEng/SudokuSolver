@@ -38,7 +38,7 @@ public abstract class SudokuSolverTest {
 
 	@Test
 	public void testSudokusFromFile() throws IOException {
-		List<String> lines = read("src/test/resources/sudokus_and_solutions.txt").filter(e -> !e.isEmpty())
+		List<String> lines = read("src/resources/sudokus_and_solutions.txt").filter(e -> !e.isEmpty())
 				.collect(Collectors.toList());
 
 		while (lines.size() > 2) {
