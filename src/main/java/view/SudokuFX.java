@@ -10,15 +10,15 @@ import javafx.stage.Stage;
 public class SudokuFX extends Application {
 
 	@Override
-	public void start(Stage primaryStage) {
+	public void start(Stage stage) {
 
 		SudokuPlay box = new SudokuPlay();
 
 		Scene scene = new Scene(box, 1200, 900);
 		scene.getStylesheets()
 				.add(toStylesheetString("src/resources/sudoku.css"));
-		primaryStage.setScene(scene);
-		primaryStage.show();
+		stage.setScene(scene);
+		stage.show();
 	}
 
 	public String toStylesheetString(String stylesheet) {
