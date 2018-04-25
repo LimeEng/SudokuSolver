@@ -1,9 +1,14 @@
 package view;
 
+import java.util.Arrays;
+
 import javafx.geometry.Insets;
+import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
 public class SudokuCanvas extends Canvas {
 
@@ -57,9 +62,48 @@ public class SudokuCanvas extends Canvas {
 		});
 	}
 
+	private void setValueAt(int value, int row, int col) {
+		if (row >= 0 && row < sudoku.length && col >= 0 && col < sudoku[0].length) {
+			sudoku[row][col] = value;
+		}
+	}
+
 	private void createKeyListener() {
 		this.setOnKeyPressed(e -> {
+
 			switch (e.getCode()) {
+
+			case DIGIT0:
+				setValueAt(0, selectedRow, selectedCol);
+				break;
+			case DIGIT1:
+				setValueAt(1, selectedRow, selectedCol);
+				break;
+			case DIGIT2:
+				setValueAt(2, selectedRow, selectedCol);
+				break;
+			case DIGIT3:
+				setValueAt(3, selectedRow, selectedCol);
+				break;
+			case DIGIT4:
+				setValueAt(4, selectedRow, selectedCol);
+				break;
+			case DIGIT5:
+				setValueAt(5, selectedRow, selectedCol);
+				break;
+			case DIGIT6:
+				setValueAt(6, selectedRow, selectedCol);
+				break;
+			case DIGIT7:
+				setValueAt(7, selectedRow, selectedCol);
+				break;
+			case DIGIT8:
+				setValueAt(8, selectedRow, selectedCol);
+				break;
+			case DIGIT9:
+				setValueAt(9, selectedRow, selectedCol);
+				break;
+
 			case W:
 			case UP:
 				if (shouldMoveSelected()) {
@@ -113,6 +157,11 @@ public class SudokuCanvas extends Canvas {
 		fillCanvas(g, Color.rgb(52, 73, 94));
 		drawSubBoxes(g);
 		drawCells(g);
+		System.out.println("===========================");
+		for (int[] a : sudoku) {
+			System.out.println(Arrays.toString(a));
+		}
+		System.out.println("===========================");
 	}
 
 	private void drawCells(GraphicsContext g) {
@@ -158,8 +207,7 @@ public class SudokuCanvas extends Canvas {
 		}
 	}
 
-	private void drawCell(GraphicsContext g, double x, double y, double cellWidth, double cellHeight,
-			boolean highlight) {
+	private void drawCell(GraphicsContext g, int x, int y, double cellWidth, double cellHeight, boolean highlight) {
 		double xModifier = insets.getLeft();
 		double yModifier = insets.getTop();
 		double x2 = (x * cellWidth) + xModifier;
@@ -175,6 +223,17 @@ public class SudokuCanvas extends Canvas {
 			g.setStroke(Color.RED);
 			g.strokeRoundRect(x2, y2, w, h, arcWidth, arcHeight);
 		}
+		int value = sudoku[y][x];
+		Font font = Font.font(48);
+		if (value != 0) {
+			g.setFill(Color.GREEN);
+			g.setFont(font);
+			g.setTextAlign(TextAlignment.CENTER);
+			g.setTextBaseline(VPos.CENTER);
+			double textX = x2 + (w / 2);
+			double textY = y2 + (h / 2);
+			g.fillText(String.valueOf(value), textX, textY, w);
+		}
 	}
 
 	private double getCellWidth() {
@@ -185,6 +244,15 @@ public class SudokuCanvas extends Canvas {
 	private double getCellHeight() {
 		double modifier = insets.getBottom() + insets.getTop();
 		return (getHeight() - modifier) / height;
+	}
+
+	public void setGrid(int[][] sudoku) {
+		for (int i = 0; i < sudoku.length; i++) {
+			for (int k = 0; k < sudoku[i].length; k++) {
+				this.sudoku[i][k] = sudoku[i][k];
+			}
+		}
+		draw();
 	}
 
 	public int[][] toGrid() {
