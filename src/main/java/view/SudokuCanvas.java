@@ -1,7 +1,5 @@
 package view;
 
-import java.util.Arrays;
-
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
@@ -157,11 +155,6 @@ public class SudokuCanvas extends Canvas {
 		fillCanvas(g, Color.rgb(52, 73, 94));
 		drawSubBoxes(g);
 		drawCells(g);
-		System.out.println("===========================");
-		for (int[] a : sudoku) {
-			System.out.println(Arrays.toString(a));
-		}
-		System.out.println("===========================");
 	}
 
 	private void drawCells(GraphicsContext g) {
