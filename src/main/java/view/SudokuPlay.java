@@ -11,6 +11,11 @@ public class SudokuPlay extends HBox {
 
 	private SudokuSolver solver = new BacktrackingDfsSolver();
 
+	private static final int[][] EMPTY_GRID = { { 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
+
 	public SudokuPlay() {
 		super();
 		setup();
@@ -20,12 +25,17 @@ public class SudokuPlay extends HBox {
 		SudokuCanvas problem = new SudokuCanvas(new Insets(30), 9, 9, 3, 3);
 		SudokuCanvas solution = new SudokuCanvas(new Insets(30), 9, 9, 3, 3);
 		Button solveButton = new Button("Solve");
+		Button clearButton = new Button("Clear");
 
 		solveButton.setOnAction(e -> {
 			int[][] sudoku = problem.toGrid();
 			if (SudokuUtils.isValid(sudoku, 9, 9)) {
 				solution.setGrid(solver.solve(sudoku));
 			}
+		});
+
+		clearButton.setOnAction(e -> {
+			problem.setGrid(EMPTY_GRID);
 		});
 
 		problem.widthProperty()
@@ -43,6 +53,6 @@ public class SudokuPlay extends HBox {
 						.multiply(1));
 
 		this.getChildren()
-				.addAll(problem, solveButton, solution);
+				.addAll(problem, solveButton, clearButton, solution);
 	}
 }
