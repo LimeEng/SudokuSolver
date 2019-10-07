@@ -1,1 +1,1 @@
-[![Build Status](https://travis-ci.org/LimeEng/SudokuSolver.svg?branch=master)](https://travis-ci.org/LimeEng/SudokuSolver)
+![](https://github.com/LimeEng/SudokuSolver/workflows/Java%20CI/badge.svg)
